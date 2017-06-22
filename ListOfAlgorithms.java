@@ -14,6 +14,8 @@ public class ListOfAlgorithms {
     ListOfAlgorithms LoA = new ListOfAlgorithms();
     ArrayList<Integer[]> arr = new ArrayList<>();
 
+    String coo = LoA.intToRoman(98);
+
 /*    int[][] W = new int[][]{
         {0, 7, 4, 6, 1},
         {Integer.MAX_VALUE, 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE},
@@ -22,16 +24,148 @@ public class ListOfAlgorithms {
         {Integer.MAX_VALUE, 2, Integer.MAX_VALUE, 1, 0}
     };*/
     int[][] W = new int[][] {
-        {0, 10, 1},
-        {10, 0, 5 },
-        {40, 25, 0}
+        {1, 2, 3}, // 3 1      0 0 = 1 0 -> 0 1             1, 0 = 1 1 -> 0, 0
+        {4, 5, 6},
+        {7, 8, 9}// 4 2      0 1 = 0 0 -> 1 1             1, 1, = 0 1 -> 1, 0
+
     };
 
     int[] test = new int[] {2,3,6,7};
 
-    List<List<Integer>> cool = LoA.combinationSum(test, 7);
+    LoA.rotate(W);
     int k = 90;
   }
+
+
+  /*
+  You are given an n x n 2D matrix representing an image.
+
+Rotate the image by 90 degrees (clockwise).
+
+Follow up:
+Could you do this in-place?
+   */
+  public void rotate(int[][] matrix) {
+
+    int patrix[][] = new int[matrix.length][matrix.length];
+
+
+    if (matrix.length <= 1){
+      System.out.print(matrix[0][0]);
+    }
+
+    // rows become columns,
+    // columns because [length - i][col]
+    else{
+      for(int i = 0; i < matrix.length; i++){
+        System.out.println();
+        for (int j = 0; j < matrix.length; j++){
+          patrix[i][j] = matrix[matrix.length - 1 - j][i];
+        }
+      }
+
+      for(int i = 0; i < matrix.length; i++){
+        System.out.println();
+        for(int j = 0; j < matrix.length; j++){
+          System.out.print(patrix[i][j] + " ");
+        }
+      }
+    }
+
+  }
+
+
+  /*
+  Given a collection of distinct numbers, return all possible permutations.
+
+For example,
+[1,2,3] have the following permutations:
+   */
+
+  // recursion?
+  // 1 2 3
+  // 1 3 2
+  // 2 1 3
+  // 2 3 1
+  // if we use recursion, we need to start from n = 0 to base case n = nums.length
+
+  // 1 2 3 4 5
+  // 1 3 2 4 5
+  // 1 4 2 3 5
+  // 1 5 2 3 4
+  // 1 3 4 2 5
+  // 1 4 3 2 5
+  // 1 5 3 2 5
+
+  public List<List<Integer>> permute(int[] nums) {
+
+    int possiblePerms = nums.length;
+
+    for(int i = nums.length; i > 1; i--){
+      int nextLower = i-1;
+
+      possiblePerms *= nextLower;
+    }
+
+    return t;
+  }
+
+/* Given an integer, convert it to a roman numeral.
+
+Input is guaranteed to be within the range from 1 to 3999.*/
+
+
+ /* Roman Numeral	Hindu-Arabic Equivalent
+  I	1
+  V	5
+  X	10
+  L	50
+  C	100
+  D	500
+  M	100 */
+
+
+ /*
+Roman Numeral	Hindu-Arabic Equivalent
+IV	4 = 5 - 1
+IX	9 = 10 - 1
+XL	40 = 50 - 10
+XC	90 = 100 - 10
+CD	400 = 500 - 100
+CM	900 = 100 - 100 */
+
+  public String intToRoman(int num) {
+
+
+    String[] roman = {"I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M"};
+    int[] nums = {1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000};
+
+    int pun = num;
+
+
+    StringBuilder s = new StringBuilder();
+
+    int i = nums.length-1;
+
+    while (pun != 0){
+      if(pun - nums[i] >= 0){
+        s.append(roman[i]);
+
+        pun = pun - nums[i];
+
+      } else {
+        i--;
+      }
+
+    }
+
+
+
+    String f = s.toString();
+    return f;
+  }
+
+
 
   /*Given a set of candidate numbers (C) (without duplicates) and a target number (T), find all unique combinations in C where the candidate numbers sums to T.
 
