@@ -16,13 +16,6 @@ public class ListOfAlgorithms {
 
     String coo = LoA.intToRoman(98);
 
-/*    int[][] W = new int[][]{
-        {0, 7, 4, 6, 1},
-        {Integer.MAX_VALUE, 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE},
-        {Integer.MAX_VALUE, 2, 0, 5, 6},
-        {Integer.MAX_VALUE, 3, Integer.MAX_VALUE, 0, Integer.MAX_VALUE},
-        {Integer.MAX_VALUE, 2, Integer.MAX_VALUE, 1, 0}
-    };*/
     int[][] W = new int[][] {
         {1, 2, 3}, // 3 1      0 0 = 1 0 -> 0 1             1, 0 = 1 1 -> 0, 0
         {4, 5, 6},
@@ -30,12 +23,55 @@ public class ListOfAlgorithms {
 
     };
 
-    int[] test = new int[] {2,3,6,7};
+    int[] test = new int[] {2,0,0};
 
-    LoA.rotate(W);
+    boolean cool = LoA.canJump(test);
     int k = 90;
   }
 
+
+
+
+  /* Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Determine if you are able to reach the last index.
+
+For example:
+A = [2,3,1,1,4], return true.
+
+A = [3,2,1,0,4], return false */
+
+  public boolean canJump(int[] nums) {
+    ArrayList<Integer> zeroes = new ArrayList<>();
+
+    for(int i = 0; i < nums.length; i++){
+      if (nums[i] == 0) {
+        zeroes.add(i);
+      }
+    }
+
+
+
+    if ( nums.length == 1 ) return true;
+
+    int f = 0;
+    while(f != zeroes.size()) {
+      int kidA = f;
+      for (int i = 0; i < zeroes.get(f); i++) {
+        if (i + nums[i] > zeroes.get(f) || i+nums[i] == nums.length-1){
+          i = zeroes.get(f);
+          f++;
+        }
+        if (f == zeroes.size()) return true;
+      }
+      if ( kidA == f )
+        return false;
+    }
+
+    return true;
+  }
 
   /*
   You are given an n x n 2D matrix representing an image.
