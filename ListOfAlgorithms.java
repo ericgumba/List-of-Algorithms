@@ -1,3 +1,5 @@
+
+
 import java.io.*;
 import java.util.*;
 import java.text.*;
@@ -6,6 +8,7 @@ import java.util.regex.*;
 
 public class ListOfAlgorithms {
 
+  ListNode ln;
   ArrayList<Integer> f = new ArrayList<>();
 
   List<List<Integer>> t = new ArrayList<>();
@@ -19,18 +22,301 @@ public class ListOfAlgorithms {
     int[][] W = new int[][] {
         {1, 2, 3}, // 3 1      0 0 = 1 0 -> 0 1             1, 0 = 1 1 -> 0, 0
         {4, 5, 6},
-        {7, 8, 9}// 4 2      0 1 = 0 0 -> 1 1             1, 1, = 0 1 -> 1, 0
+        {7, 8, 9}/* 4 2      0 1 = 0 0 -> 1 1             1, 1, = 0 1 -> 1, 0 */
 
     };
 
-    int[] test = new int[] {2,0,0};
+    int[] test = new int[] {2,3,1,1,4};
 
-    boolean cool = LoA.canJump(test);
+    int cool = LoA.jump(test);
     int k = 90;
   }
 
 
 
+
+  /*/ Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it is able to trap after raining.
+
+For example,
+Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6. /*/
+
+
+
+  public int chocolate(int n, int[] s, int d, int m){
+    // n = length of chocolate
+    // s = array of chocolate
+    // d = day that ron's bday falls on = sum of the chocolate bars
+    // m = month of ron's bday = number of chocs that are required.
+
+    // we need two different counters, one stores the answer ( consecutive chocolates
+    // found that so far match the day )
+    // The other counter counts how many chocolates we have encountered so far. It is compared
+    // with the value of m, and resets when it eventually equals m.
+    // Lastly we need a chocolate accumulator that is also compared with d.
+
+
+    int resultCounter = 0;
+    int chocolateAccumulator = 0;
+
+
+    // Now we need to iterate through the chocolates, and comparing the values of the accumulator
+    // and the days and the chocolates encountered so far, in order to find our answer.
+
+
+    // 2 5 1 3 4 4 3 5 1 1 2 1 *4 1 3 3 4 2 1
+
+    // d = 18, m = 7 n = 19
+
+    // *
+    int t = n - m;
+
+
+    for( int i = 0; i <= t; i++ ){
+      for (int j = i; j < m + i; j++) {
+        chocolateAccumulator += s[j];
+      }
+      if( chocolateAccumulator == d ) {
+        resultCounter++;
+        chocolateAccumulator = 0;
+      } else {
+        chocolateAccumulator = 0;
+      }
+    }
+
+
+    return resultCounter;
+
+  }
+
+
+
+  public int trap(int[] height) {
+    int aguaL = 0;
+    int aguaR = 0;
+    int agua = 0;
+
+    for(int i = 1; i < height.length-1; i++){
+      int currentMaxLeft = 0;
+      int currentMaxRight = 0;
+
+      for(int a = i-1; a >= 0; a--){
+        currentMaxLeft = Math.max(height[a], currentMaxLeft);
+      }
+
+      for(int b = i+1; b <= height.length-1; b++){
+        currentMaxRight = Math.max(height[b], currentMaxRight);
+      }
+
+      if(currentMaxLeft - height[i] >= 0){
+        aguaL = currentMaxLeft - height[i];
+      } else {
+        aguaL = 0;
+      }
+
+      if(currentMaxRight - height[i] >= 0){
+        aguaR = currentMaxRight - height[i];
+      } else {
+        aguaR = 0;
+      }
+
+      agua += Math.min(aguaL, aguaR);
+
+
+    }
+
+    return agua;
+  }
+
+
+
+  /* Given n non-negative integers representing an elevation map where the width of each bar is 1,
+     compute how much water it is able to trap after raining.
+
+For example,
+Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6. */
+
+
+
+
+  /* Given an array of non-negative integers, you are initially positioned at the first index of the array.
+
+Each element in the array represents your maximum jump length at that position.
+
+Your goal is to reach the last index in the minimum number of jumps.
+
+For example:
+Given array A = [2,3,1,1,4]
+
+The minimum number of jumps to reach the last index is 2. (Jump 1 step from index 0 to 1, then 3 steps to the last index.)
+
+Note:
+You can assume that you can always reach the last index. */
+
+  public int jump(int[] nums) {
+
+
+
+    int jump = 0;
+
+    int jumpPoint = nums[0];
+
+    int max = nums[0];
+
+    for(int i = 0; i < nums.length; i++){
+
+      if (nums[i] + i > max){
+        max = nums[i] + i;
+      }
+      if (i == jumpPoint || i == nums.length-1){
+        jump++;
+        jumpPoint = max;
+      }
+    }
+
+    return jump;
+
+  }
+
+
+  /* Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+
+You may assume that the intervals were initially sorted according to their start times.
+
+Example 1:
+Given intervals [1,3],[6,9], insert and merge [2,5] in as [1,5],[6,9].
+
+Example 2:
+Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] in as [1,2],[3,10],[12,16].
+
+This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
+
+
+case 1:
+     <------>
+<----->
+
+s2 < s1 < e2 < e1
+
+
+
+case 2:
+     <------>
+           <------->
+
+s1 < s2 < e1 < e2
+
+
+
+
+case 3:
+     <------->
+        <-->
+
+s1 < s2 < e2 < e1
+
+
+
+
+case 4:
+     <------->
+   <------------->
+
+s2 < s1 < e1 < s2
+
+
+
+
+
+case 5:
+      <------->
+ <->
+
+s2 < e2 < s1 < e1
+
+
+
+
+
+
+case 6:
+
+      <-------->
+                   <->
+s1 < e1 < s2 < e2
+
+*/
+
+  /**
+   * Definition for an interval.
+   * public class Interval {
+   *     int start;
+   *     int end;
+   *     Interval() { start = 0; end = 0; }
+   *     Interval(int s, int e) { start = s; end = e; }
+   * }
+   */
+
+  public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+
+    List<Interval> newIntervalList = new ArrayList<>();
+
+
+    boolean newIntervalInserted = false;
+
+    int i = 0;
+    for (Interval inter : intervals) {
+
+      if(newIntervalInserted == true){
+        newIntervalList.add(inter);
+        i++;
+      } else if( inter.end < newInterval.start ){
+
+        newIntervalList.add(inter);
+
+        i++;
+
+      } else if ( newInterval.end < inter.start ){
+
+        newIntervalList.add(newInterval);
+
+        newIntervalInserted = true;
+
+        // if( i == 0 ){
+        newIntervalList.add(intervals.get(i));
+
+        i++;
+
+
+      }else{
+
+        int newLowEndPoint = Math.min( newInterval.start, inter.start);
+
+        int newHighEndPoint = Math.max( newInterval.end, inter.end);
+
+
+        newInterval = new Interval( newLowEndPoint, newHighEndPoint );
+
+
+
+        int j = i+1;
+
+        // we either add a new interval or nah. Here is where we decide.
+        if( j < intervals.size() && newInterval.end < intervals.get(j).start ) {
+
+          newIntervalList.add(newInterval);
+          newIntervalInserted = true;
+        }
+        i++;
+
+
+      }
+    }
+
+    if (newIntervalInserted == false ){
+      newIntervalList.add(newInterval);
+    }
+    return newIntervalList;
+  }
 
   /* Given an array of non-negative integers, you are initially positioned at the first index of the array.
 
